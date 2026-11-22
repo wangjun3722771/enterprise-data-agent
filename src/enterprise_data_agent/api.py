@@ -85,3 +85,19 @@ def calculate_discount(order: DiscountRequest):
         final_total=final_total,
         saved=saved,
     )
+
+
+from typing import Annotated
+
+from fastapi import Depends
+from sqlalchemy.orm import Session
+
+from enterprise_data_agent.analytics import get_revenue_by_region
+from enterprise_data_agent.database import get_db
+
+
+@app.get("/analytics/revenue-by-region")
+def revenue_by_region(
+    session: Annotated[Session, Depends(get_db)],
+):
+    return get_revenue_by_region(session)
